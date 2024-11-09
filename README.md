@@ -1,23 +1,21 @@
-# Real-Time Crosses and Noughts Game
+# Play Tic Tac Toe - Built Using Laravel Reverb
 
 ## Description
 
-This is a real-time crosses and noughts game built with Laravel, Vue.js, and Inertia.js, inspired by the Laracasts course ["Real Time Game with Laravel"](https://laracasts.com/series/real-time-games-with-laravel).  The game allows players to create a new game, join existing games, and compete against each other. When a player wins, a modal popup is displayed to announce the winner. 
+This is tic tac toe game built with Laravel, Vue.js, and Inertia.js, inspired by the Laracasts course ["Real Time Game with Laravel"](https://laracasts.com/series/real-time-games-with-laravel).  The game allows a player to create a new game, join existing games, and compete against each other in real time. 
 
-This project is a perfect showcasing of [Reverb](https://reverb.laravel.com/) and [Echo](https://github.com/laravel/echo), two powerfull tool for real time broadcasting. 
-If you're begineer, just starting to learn broadcasing in laravel , follow this projects commit step by step to learn every single feature.I tried to VC every small thing.
+This project is a perfect showcasing of [Reverb](https://reverb.laravel.com/) (web-socket server) and [Echo](https://github.com/laravel/echo) (library for listening, event broadcasted by backend server), two powerfull tools mainly used for live-updating user-interfaces. 
+If you're begineer and want to learn how modern web-applications update things in real-time then, follow this projects commit step by step to learn every single feature.I tried to Version Control every small thing.
 
 ## Features
 
-- **Real-Time Gameplay**: Players can create a game and invite others to join, allowing for real-time interaction and gameplay.
+- **Real-Time Gameplay**: Players can join and create games, allowing for real-time interaction and gameplay.
 - **Player Matchups**: A game starts when a second player joins, enabling head-to-head matches.
 - **Winner Announcement**: A modal popup announces the winner at the end of each game.
 
 ## Upcoming Features
 
 - **Invite Friends**: Invite friends to join the game via email.
-- **Share Scores**: Share your game scores on social media platforms like Twitter and WhatsApp.
-- **Real Money Prizes**: Add support for purchasing in-game coins with real money to enable real money prizes for winners.
 
 ## Installation
 
