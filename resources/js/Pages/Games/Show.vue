@@ -3,12 +3,18 @@
 
         <!-- Game board -->
         <menu class="grid grid-cols-3 gap-1.5 w-0 min-w-fit mx-auto mt-12">
-            <li v-for="(square, index) in boardState" class="bg-gray-300 size-24 grid place-items-center">
+            <li v-for="(square, index) in boardState" 
+                
+                :class="{'border border-4 border-dotted border-green-500 drop-shadow-xl': cellsToHighlight.includes(index)}" 
+                class="bg-gray-300 size-24 grid place-items-center"
+            >
                 <button v-if="square === 0" @click="fillSquare(index)"
-                    class="place-self-stretch bg-gray-200 hover:bg-gray-300 transition-colors"
+                    class="place-self-stretch bg-gray-200 hover:bg-gray-300 transition-colors"                    
                     :disabled="!yourTurn"                    
                     ></button>
-                <span v-else v-text="square === -1 ? 'X' : 'O'" class="text-4xl font-bold"> </span>
+                <span v-else v-text="square === -1 ? 'X' : 'O'" 
+                    class="text-4xl font-bold"                    
+                > </span>
             </li>
         </menu>
 
@@ -24,7 +30,7 @@
 
             <!-- player two -->
             <li class="flex items-center gap-2" v-if="game.player_two">
-                <span :class="{ 'bg-green-300': !xTurn }" class="p-1.5 font-bold rounded bg-gray-200">Y</span>
+                <span :class="{ 'bg-green-300': !xTurn }" class="p-1.5 font-bold rounded bg-gray-200">O</span>
                 <span>{{ playerTwoName }}</span>
                 <span :class="{ '!bg-green-500': players.find(({ id }) => id === game.player_two_id) }"
                     class="bg-red-500 size-2 rounded"></span>
@@ -118,6 +124,8 @@ const playerTwoName = computed(() => {
     return null;
 });
 
+const cellsToHighlight = ref([]);
+
 const channel = window.Echo.join(`games.${props.game.id}`)
     .here((users) => players.value = users)
     .joining((user) => router.reload({
@@ -154,36 +162,63 @@ const fillSquare = (index) => {
 }
 
 function checkForVictory() {
-    const winningLines = lines.map((line) => line.reduce((carry, index) => carry + boardState.value[index], 0))
-        .find(sum => Math.abs(sum) === 3);
+    const winningLines = lines.map((line) => line.reduce((carry, index) => carry + boardState.value[index], 0));
+    const winningLinesCount = winningLines.find(sum => Math.abs(sum) === 3)
 
     // handle O win
-    if (winningLines === 3) {
-        gameState.change(gameStates.OWins);
+    if (winningLinesCount === 3) {
+        cellsToHighlight.value = getCellsToHighlight(winningLines,3)
+
+        setTimeout(() => {
+            gameState.change(gameStates.OWins);
+        },2000)
+
         return
     }
 
     // handle x win
-    if (winningLines === -3) {
-        gameState.change(gameStates.XWins);
+    if (winningLinesCount === -3) {
+
+        cellsToHighlight.value = getCellsToHighlight(winningLines,-3)
+
+        setTimeout(() => {
+            gameState.change(gameStates.XWins);
+        },2000)
+
         return
     }
 
     // handle match tie condition
+
     if (!boardState.value.includes(0)) {
-        gameState.change(gameStates.Stalemate);
+        setTimeout(() => {
+            gameState.change(gameStates.Stalemate);
+        },2000)
+
         return;
     }
+    
+    // reset highlighted cells
+    cellsToHighlight.value = [];
 
     gameState.change(gameStates.InProgress);
 }
 
 const resetGame = () => {
     boardState.value.fill(0);
+
+    // reset highlighted cells
+    cellsToHighlight.value = [];
+    
     gameState.change(gameStates.InProgress);
 
     //whisper and reset game state in database also
     updateOpponent();
+}
+
+const getCellsToHighlight = (linesArray,sum) => {
+    const lineIndex = linesArray.indexOf(sum);
+    return lines[lineIndex];
 }
 
 onMounted(checkForVictory);
