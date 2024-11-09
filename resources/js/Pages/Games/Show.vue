@@ -1,10 +1,13 @@
 <template>
     <AuthenticatedLayout>
 
+        <!-- Game board -->
         <menu class="grid grid-cols-3 gap-1.5 w-0 min-w-fit mx-auto mt-12">
             <li v-for="(square, index) in boardState" class="bg-gray-300 size-24 grid place-items-center">
                 <button v-if="square === 0" @click="fillSquare(index)"
-                    class="place-self-stretch bg-gray-200 hover:bg-gray-300 transition-colors"></button>
+                    class="place-self-stretch bg-gray-200 hover:bg-gray-300 transition-colors"
+                    :disabled="!yourTurn"                    
+                    ></button>
                 <span v-else v-text="square === -1 ? 'X' : 'O'" class="text-4xl font-bold"> </span>
             </li>
         </menu>
@@ -68,9 +71,9 @@ const props = defineProps({
 
 
 // Game Board Rules
-// -1 represent X
-// 0 represent space | empty
-// 1 represent O
+// -1 represent 'X'
+// 0 represent 'space | empty'
+// 1 represent 'O'
 
 // show game state from db if it has, else set it to default state. 
 
