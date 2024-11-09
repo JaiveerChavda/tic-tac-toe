@@ -17,7 +17,7 @@
         <ul class="max-w-sm mx-auto mt-6 space-y-4">
             <li class="flex items-center gap-2">
                 <span :class="{ 'bg-green-300': xTurn }" class="p-1.5 font-bold rounded bg-gray-200">X</span>
-                <span>{{ game.player_one.name }}</span>
+                <span>{{ playerOneName }}</span>
                 <span :class="{ '!bg-green-500': players.find(({ id }) => id === game.player_one_id) }"
                     class="bg-red-500 size-2 rounded"></span>
             </li>
@@ -25,7 +25,7 @@
             <!-- player two -->
             <li class="flex items-center gap-2" v-if="game.player_two">
                 <span :class="{ 'bg-green-300': !xTurn }" class="p-1.5 font-bold rounded bg-gray-200">Y</span>
-                <span>{{ game.player_two.name }}</span>
+                <span>{{ playerTwoName }}</span>
                 <span :class="{ '!bg-green-500': players.find(({ id }) => id === game.player_two_id) }"
                     class="bg-red-500 size-2 rounded"></span>
             </li>
@@ -33,7 +33,7 @@
             <li v-else>Waiting for player two...</li>
         </ul>
 
-        <!-- show modalpop up when game state changes -->
+        <!-- show modalpop up when game state changes like finished,lost or stalemate -->
         <Modal :show="gameState.hasEnded()" @close="resetGame()">
             <div class="p-6">
 
@@ -106,6 +106,17 @@ const lines = [
     [0, 4, 8],
     [2, 4, 6]
 ]
+
+const playerOneName = computed(() => props.game.player_one.id === page.props.auth.user.id ? 'You' : props.game.player_one.name );
+
+const playerTwoName = computed(() => {
+
+    if(props.game.player_two){
+        return props.game.player_two.id === page.props.auth.user.id ? 'You' : props.game.player_two.name
+    }
+
+    return null;
+});
 
 const channel = window.Echo.join(`games.${props.game.id}`)
     .here((users) => players.value = users)
