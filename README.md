@@ -23,20 +23,23 @@ To get started, clone the repository and follow the steps below:
 
 ```bash
 # Clone the repository
-git clone <https://github.com/JaiveerChavda/tictactoe.git>
+git clone <https://github.com/JaiveerChavda/tic-tac-toe.git>
 
 # Navigate to the project directory
-cd tictactoe
+cd tic-tac-toe
 
 # Install dependencies
 composer install
 npm install
 
-# Run database migrations
-php artisan migrate
+# Duplicate the .env.example file and rename it to .env
+cp .env.example .env
 
 # Generate app key
 php artisan generate:key
+
+# Run database migrations
+php artisan migrate
 
 # Start the laravel development server
 php artisan serve
@@ -49,7 +52,6 @@ php artisan reverb:start
 
 # Listen for queue/Start queue
 php artisan queue:work or php artisan queue:listen
-npm
 ```
 
 ## Give Feedback 💬
